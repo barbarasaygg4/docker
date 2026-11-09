@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+DATA_DIR="/var/www/html/data"
+
+# Si el volumen persistente de Coolify se montó con otro dueño (ej. root),
+# lo corregimos aquí en cada arranque del contenedor.
+if [ -d "$DATA_DIR" ]; then
+    chown -R www-data:www-data "$DATA_DIR" || true
+    chmod -R 775 "$DATA_DIR" || true
+fi
+
+exec "$@"
